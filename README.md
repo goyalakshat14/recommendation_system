@@ -1,2 +1,2 @@
 # recommendation_system
-This is Recommendation System that aspired to increase serendipity of a recommendation.
+This is a Recommendation System that aspires to increase THE serendipity of recommendations.
