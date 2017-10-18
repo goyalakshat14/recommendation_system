@@ -118,6 +118,23 @@ def predict_movie_rating(unrated_movies_by_rated_movies_users,similarity_matrix)
 		predicted_rating = rating/weight_sum
 		predicted_movie_rating.append([movie,predicted_rating])
 	return predicted_movie_rating
+
+def k_collab_filter_program_controller(cursor,uid,no_of_rated_movies_fetch,no_of_users_fetch,no_of_unrated_movies,all_the_user_rating):
+	rated_movie = fetch_rated_movie(no_of_rated_movies_fetch,uid,cursor)
+
+	rated_movie_users = fetch_users(no_of_users_fetch,rated_movie,all_the_user_rating)
+
+	unrated_movies_by_rated_movies_users = fetch_unrated(no_of_unrated_movies,rated_movie_users,rated_movie,all_the_user_rating)
+
+	similarity_matrix = k_nearest_neighbour(uid,rated_movie,rated_movie_users,all_the_user_rating,cursor)
+
+	similarity_matrix = sorted(similarity_matrix,key=lambda x: x[1],reverse=True)
+
+	predicted_movie_rating = predict_movie_rating(unrated_movies_by_rated_movies_users,similarity_matrix)
+
+	predicted_movie_rating = sorted(predicted_movie_rating,key=lambda x: x[1],reverse=True)
+
+	return predicted_movie_rating
 ############---testing k_nearest_function---#############
 
 #setting the first user for testing purpose
@@ -128,21 +145,5 @@ no_of_unrated_movies = 200
 
 db = pymysql.connect("localhost","root","tannugoyalU","newMovieLens" )
 cursor = db.cursor()
-
 all_the_user_rating = get_all_the_rating_and_user(cursor)
-
-rated_movie = fetch_rated_movie(no_of_rated_movies_fetch,uid,cursor)
-
-rated_movie_users = fetch_users(no_of_users_fetch,rated_movie,all_the_user_rating)
-
-unrated_movies_by_rated_movies_users = fetch_unrated(no_of_unrated_movies,rated_movie_users,rated_movie,all_the_user_rating)
-
-similarity_matrix = k_nearest_neighbour(uid,rated_movie,rated_movie_users,all_the_user_rating,cursor)
-
-similarity_matrix = sorted(similarity_matrix,key=lambda x: x[1],reverse=True)
-
-predicted_movie_rating = predict_movie_rating(unrated_movies_by_rated_movies_users,similarity_matrix)
-
-predicted_movie_rating = sorted(predicted_movie_rating,key=lambda x: x[1],reverse=True)
-
-print(predicted_movie_rating)
+k_collab_filter_program_controller(cursor,uid,no_of_rated_movies_fetch,no_of_users_fetch,no_of_unrated_movies,all_the_user_rating)
