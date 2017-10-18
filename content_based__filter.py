@@ -1,3 +1,4 @@
+import pymysql
 
 def get_all_the_rating_and_user(cursor):
 	query_all_the_user_rating = "select * from newRating"
@@ -12,13 +13,29 @@ def get_all_the_rating_and_user(cursor):
 
 	return user_dict
 
+#this returns a dictionary with key movies that have their genre stored as key of nested dictionary
 def get_movies_with_genre(cursor):
 	query = "select * from genre"
 	cursor.execute(query)
-	print cursor.fetchall()
+	genre = cursor.fetchall()
+	movie_with_genre = {}
+	for movie in genre:
+		if(movie[0] in movie_with_genre):
+			movie_with_genre[movie[0]].update({movie[1]:''})
+		else
+			movie_with_genre[movie[0]] = {movie[1]:''}
+	return movie_with_genre
 
-def content_based_filter();
+def content_based_filter():
+	print("will do something")
 	
+def content_based_filter_controller():
+	movie_with_genre = get_movies_with_genre(cursor)
+
+
+
+
+
 
 #testing contetn based filter
 uid = 1
@@ -26,7 +43,10 @@ no_of_rated_movies_fetch = 200
 no_of_users_fetch = 200
 no_of_unrated_movies = 200
 
-db = pymysql.connect("localhost","root","tannugoyalU","newMovieLens" )
+password = input("enter the password - ")
+
+db = pymysql.connect("localhost","root",password,"newMovieLens" )
 cursor = db.cursor()
 all_the_user_rating = get_all_the_rating_and_user(cursor)
-get_movies_with_genre(cursor)
+
+content_based_filter_controller(all_the_user_rating,cursor)

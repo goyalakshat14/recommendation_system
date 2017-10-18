@@ -13,7 +13,10 @@
 import pymysql
 
 ###########---program starts here---###########
-db = pymysql.connect("localhost","root","tannugoyalU","newMovieLens" )
+
+password = input("enter the password - ")
+
+db = pymysql.connect("localhost","root",password,"newMovieLens" )
 cursor = db.cursor()
 
 query_all_the_user_rating = "select * from newRating"

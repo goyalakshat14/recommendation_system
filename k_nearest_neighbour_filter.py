@@ -143,7 +143,9 @@ no_of_rated_movies_fetch = 200
 no_of_users_fetch = 200
 no_of_unrated_movies = 200
 
-db = pymysql.connect("localhost","root","tannugoyalU","newMovieLens" )
+password = input("enter the password - ")
+
+db = pymysql.connect("localhost","root",password,"newMovieLens" )
 cursor = db.cursor()
 all_the_user_rating = get_all_the_rating_and_user(cursor)
 k_collab_filter_program_controller(cursor,uid,no_of_rated_movies_fetch,no_of_users_fetch,no_of_unrated_movies,all_the_user_rating)
