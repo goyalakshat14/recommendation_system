@@ -21,7 +21,7 @@ def content_based_filter(movie_with_genre,rated_movie,unrated_movie):
 		i = 0
 		for genre in movie_with_genre[unrate_movie]:
 			for rat_movie in rated_movie:
-				if(genre in movie_with_genre[rat_movie[1]]):
+				if(genre in movie_with_genre[rat_movie]):
 					i += 1
 					break
 		no_of_genre_watched.append([unrate_movie,i])
