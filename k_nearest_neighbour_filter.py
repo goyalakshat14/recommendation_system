@@ -8,7 +8,7 @@ def list_contains_element(lis,element,column):
 	return False
 
 #user A is the user for which we are trying to get the recommendation
-#CAN_BE_IMPROVED
+#CAN_BE_improved
 #sql query taking so much time
 def cal_avg_rating_of_user_A(uid,cursor):
 	query = "select avg(rating) from orating where uid="+str(uid)
@@ -28,19 +28,6 @@ def cal_avg_rating_of_users(rated_movie_users,all_the_user_rating):
 		users_avg[user] = avg
 
 	return users_avg
-
-def get_all_the_rating_and_user(cursor):
-	query_all_the_user_rating = "select * from newRating"
-	cursor.execute(query_all_the_user_rating)
-	all_the_user_rating = cursor.fetchall()
-	user_dict = {}
-	for user in all_the_user_rating:
-		if(user[0] in user_dict):
-			user_dict[user[0]].update({user[1]:user[2]})
-		else :
-			user_dict[user[0]] = {user[1]:user[2]}
-
-	return user_dict
 
 #fetches movies that are rated by the user
 def fetch_rated_movie(no_of_seen_movies_fetch,uid,cursor):

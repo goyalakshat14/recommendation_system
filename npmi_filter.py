@@ -68,7 +68,7 @@ def npmi_filter_program_controller(starting_time,all_the_user_rating,count_and_l
 	print("got that",time.time()-starting_time)
 	normalised_pointwise_mutual_info = npmi_filter(prob_watched_rated_movie,prob_watched_unrated_movie_user,prob_user_watched_both)
 
-	return normalised_pointwise_mutual_info
+	return normalised_pointwise_mutual_info,prob_watched_unrated_movie_user
 
 	
 

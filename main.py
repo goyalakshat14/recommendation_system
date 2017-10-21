@@ -6,9 +6,11 @@ import k_nearest_neighbour_filter as knn
 #this contains all the methods required for content based filter 
 import content_based__filter as cbf
 
-#this conatins all the methods required for collarative 2nd filter
+#this conatins all the methods required for npmi(normalized pointwise mutual information) filter
 import npmi_filter as npmi
 
+#this contains all the methods required for tag based filter
+import tag_based_filter as tbf
 #sql library
 import pymysql
 
@@ -34,9 +36,9 @@ def get_all_the_rating_and_user(cursor):
 	user_dict = {}
 	for user in all_the_user_rating:
 		if(user[0] in user_dict):
-			user_dict[user[0]].update({user[1]:user[2]})
+			user_dict[user[0]].update({user[1]:float(user[2])})
 		else :
-			user_dict[user[0]] = {user[1]:user[2]}
+			user_dict[user[0]] = {user[1]:float(user[2])}
 	return user_dict
 
 def get_the_count_of_genre(cursor):
@@ -56,6 +58,21 @@ def get_count_and_list_of_user_rated_movie(all_the_user_rating):
 			else:
 				count_and_list_of_user_rated_movie[movie] = [1,{user}]
 	return count_and_list_of_user_rated_movie
+
+def get_tag_relav(cursor):
+	movie_tag = {}
+	tag_relav = {}
+	query = "select * from tag_relav"
+	cursor.execute(query)
+	all_tag = cursor.fetchall()
+	for movie in all_tag:
+		if(movie[0] in tag_relav):
+			tag_relav[movie[0]].update({movie[1]:float(movie[2])})
+			movie_tag[movie[0]].update({movie[1]})
+		else:
+			tag_relav[movie[0]] = {movie[1]:float(movie[2])}
+			movie_tag[movie[0]] = {movie[1]}
+	return tag_relav,movie_tag
 ###########---program starts here---###########
 
 uid = 1
@@ -78,6 +95,8 @@ movie_with_genre = get_movies_with_genre(cursor)
 
 count_of_genre = get_the_count_of_genre(cursor)
 
+tag_relav,movie_tag = get_tag_relav(cursor)
+
 count_and_list_of_user_rated_movie = get_count_and_list_of_user_rated_movie(all_the_user_rating)
 print(time.time()-starting_time)
 #knn filter
@@ -89,8 +108,11 @@ print("got predictrive rating",time.time()-starting_time)
 damping_factor = cbf.content_based_filter_controller(all_the_user_rating,rated_movie,unrated_movie,count_of_genre,movie_with_genre,cursor)
 # time_elapsed_to_get_data_from_second_filter = time.time() - starting_time
 print("startng npmi",time.time()-starting_time)
-#nmpi filter
-npmi_factor = npmi.npmi_filter_program_controller(starting_time,all_the_user_rating,count_and_list_of_user_rated_movie,rated_movie,unrated_movie)
+#nmpi filter and popularity factor
+npmi_factor,popularity_factor = npmi.npmi_filter_program_controller(starting_time,all_the_user_rating,count_and_list_of_user_rated_movie,rated_movie,unrated_movie)
 print("npmi over",time.time()-starting_time)
 
+tag_based_factor = tbf.tag_based_filter_controller(tag_relav,movie_tag,rated_movie,unrated_movie)
+print(tag_based_factor)
+print("npmi over",time.time()-starting_time)
 # collaborative_filter()

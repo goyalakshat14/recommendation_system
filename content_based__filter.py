@@ -1,20 +1,5 @@
 import pymysql
 
-def get_all_the_rating_and_user(cursor):
-	query_all_the_user_rating = "select * from newRating"
-	cursor.execute(query_all_the_user_rating)
-	all_the_user_rating = cursor.fetchall()
-	user_dict = {}
-	for user in all_the_user_rating:
-		if(user[0] in user_dict):
-			user_dict[user[0]].update({user[1]:user[2]})
-		else :
-			user_dict[user[0]] = {user[1]:user[2]}
-
-	return user_dict
-
-
-
 def content_based_filter(movie_with_genre,rated_movie,unrated_movie):
 	no_of_genre_watched = []
 	for unrate_movie in unrated_movie:
