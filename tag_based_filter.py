@@ -1,7 +1,7 @@
 import math
 
 def tag_based_filter(tag_relav,movie_tag,rated_movie,unrated_movie):
-	tag_based_factor = []
+	tag_based_factor = {}
 	for unrat_movie in unrated_movie:
 		i = 0
 		factor = 0
@@ -25,7 +25,7 @@ def tag_based_filter(tag_relav,movie_tag,rated_movie,unrated_movie):
 				factor += temp
 		if(i!=0):
 			factor /= i
-		tag_based_factor.append([unrat_movie,factor])
+		tag_based_factor[unrat_movie] = factor*10
 
 	return tag_based_factor
 

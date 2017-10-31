@@ -1,0 +1,70 @@
+		<script type="text/javascript">
+				var socket = io();
+
+				var movieName=[];
+  				socket.on('movieName', function(movie){
+    				movieName.push(movie.movieName);
+    				$("#Data").autocomplete({
+        				source : movieName,
+        				 position: {
+            				my: "center top",
+            				at: "center bottom",
+        				},
+        				messages: {
+        					noResults: '',
+        					results: function() {}
+    					},
+    					delay : 100,
+    					autofocus : true
+    				});
+  				});
+
+
+	  			$(document).ready(function () {
+	  				$(document).on('click','.name',function () {
+						$('#Data').val($(this).text());
+						$('#metadata').empty();
+						console.log($(this).text());
+						console.log($(this).attr("data-mid"));
+					});
+
+
+	  				console.log("hello");
+	  				$(this).on('input',function(){
+	  					movieName = [];
+	  					//console.log($('#Data').val());
+	  					if($('#Data').val())
+	   						socket.emit('movieName', $('#Data').val());
+	   				});
+				});
+
+	  			// $('#movieName').submit(function(e){
+	  			// 	e.preventDefault();
+	  			// 	$.get("/rating1",{movieName : $("#Data").val()},function(){
+	  			// 		return
+	  			// 	})
+	  			// })
+
+	  			function rating1(){
+	  				var movieName = $('#Data').val();
+	  				$('#content').empty();
+	  				$.get('/rating1',{movieName : movieName},function(content){
+	  					$('#content').append(content);
+	  				});
+	  			}
+
+	  			function addrating(){
+	  				var rating = $('#rating').val();
+	  				$('#content').empty();
+	  				$.get('/addrating',{rating : rating},function(content){
+	  					$('#content').append(content);
+	  				});
+	  			}
+
+		</script>
+		<p> enter the name of the movie you want to rate </p>
+		 <form action="javascript:rating1();" id="movieName">
+     		<input id="Data" autocomplete="off" name="movieName" type="text" placeholder="enter the name of the movie" autofocus="on" />
+      		 <input type="submit" value="search" onclick="rating1();"/>
+    	</form>
+    	<div id="metadata"></div>

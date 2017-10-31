@@ -1,0 +1,26 @@
+{
+  "name": "recommendation_system",
+  "version": "1.0.0",
+  "description": "file that handles all the connection to this system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/goyalakshat14/recommendation_system.git"
+  },
+  "author": "akshat goyal",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/goyalakshat14/recommendation_system/issues"
+  },
+  "homepage": "https://github.com/goyalakshat14/recommendation_system#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "express-handlebars": "^3.0.0",
+    "mysql": "^2.15.0",
+    "request": "^2.83.0",
+    "socket.io": "^2.0.3"
+  }
+}

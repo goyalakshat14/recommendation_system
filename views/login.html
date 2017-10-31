@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>login</title>
+		<link rel="stylesheet" href="./slider/css/style.css">
+		<style type="text/css">
+			html {
+				display: table;
+				width: 100%;
+				height: 100%;
+				margin: 0px;
+				padding: 0px;
+				text-align: center;
+				background: #003B46;
+				color : #FFFFFF;
+			}
+			body {
+				display: table-cell;
+				vertical-align: middle;
+			}
+		
+			#content {
+				margin-left: auto;
+				margin-right: auto;
+			}
+			input {
+				color : #000000;
+				border-radius: 6px;
+			}
+			
+			#submit {
+				background: #66A5AD;
+				border-color: #66A5AD;
+			}
+
+			a {
+				color : #66A5AD;
+				text-decoration: none;
+			}
+
+			#ui-id-1 {
+    		background: transparent;
+    		color: grey;
+    		list-style: none;
+    		padding: 0px;
+    		margin: 0px;
+			}
+			.ui-state-focus {
+				/*background:  !important;*/
+				/*background-color: #202020 !important;*/
+				border: transparent;
+				color: black; 
+			}
+			input[type="text"] {
+				background: white;
+    			width: 300px;
+			}
+			input{
+				background: white;
+			}
+
+			.range {
+			  position: absolute;
+		   	  margin: -23px 490px 0px;
+			  width: 180px;
+			  height: 5px;
+			}
+
+			.range input {
+			  width: 100%;
+			  position: absolute;
+			  top: 2px;
+			  height: 0;
+			  -webkit-appearance: none;
+			}
+			.range input::-webkit-slider-thumb {
+			  -webkit-appearance: none;
+			  width: 28px;
+			  height: 28px;
+			  margin: -8px 0  0;
+			  border-radius: 50%;
+			  background: #37adbf;
+			  cursor: pointer;
+			  border: 0 !important;
+			}
+			.range input::-moz-range-thumb {
+			  width: 28px;
+			  height: 28px;
+			  margin: -8px 0  0;
+			  border-radius: 50%;
+			  background: #37adbf;
+			  cursor: pointer;
+			  border: 0 !important;
+			}
+			.range input::-ms-thumb {
+			  width: 28px;
+			  height: 28px;
+			  margin: -8px 0  0;
+			  border-radius: 50%;
+			  background: #37adbf;
+			  cursor: pointer;
+			  border: 0 !important;
+			}
+			.range input::-webkit-slider-runnable-track {
+			  width: 100%;
+			  height: 2px;
+			  cursor: pointer;
+			  background: #b2b2b2;
+			}
+			.range input::-moz-range-track {
+			  width: 100%;
+			  height: 2px;
+			  cursor: pointer;
+			  background: #b2b2b2;
+			}
+			.range input::-ms-track {
+			  width: 100%;
+			  height: 2px;
+			  cursor: pointer;
+			  background: #b2b2b2;
+			}
+			.range input:focus {
+			  background: none;
+			  outline: none;
+			}
+			.range input::-ms-track {
+			  width: 100%;
+			  cursor: pointer;
+			  background: transparent;
+			  border-color: transparent;
+			  color: transparent;
+			}
+
+			.range-labels {
+			  margin: 50px 541px 0;
+			  padding: 0;
+			  list-style: none;
+			}
+			.range-labels li {
+			  position: relative;
+			  float: left;
+			  width: 90.25px;
+			  text-align: center;
+			  color: #b2b2b2;
+			  font-size: 14px;
+			  cursor: pointer;
+			}
+			.range-labels li::before {
+			  position: absolute;
+			  top: -25px;
+			  right: 0;
+			  left: 0;
+			  content: "";
+			  margin: 0 auto;
+			  width: 9px;
+			  height: 9px;
+			  background: #b2b2b2;
+			  border-radius: 50%;
+			}
+			.range-labels .active {
+			  color: #37adbf;
+			}
+			.range-labels .selected::before {
+			  background: #37adbf;
+			}
+			.range-labels .active.selected::before {
+			  display: none;
+			}
+
+		</style>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+
+	</head>
+	<body>
+
+		<div id="content">
+			<h1> Login </h1>
+			<div id="login">
+				<form action='javascript:formget($('#uid').val());' method="get" id="login">
+				            <label for="uid">user id:</label>
+				            <input type="text" id="uid" name="uid" placeholder="enter your userid" autofocus="on" />
+				            <input id ="submit" type="submit" value="log in" onclick="formget($('#uid').val());" />
+				</form>
+			</div>
+
+			<h2 id='message'> </h2>
+
+			<h2><a href="javascript:register();" > Register</a></h2>
+		</div>
+
+		<script type="text/javascript">
+
+			var uid;
+
+			function formget(value){
+				uid = value;
+				$('#content').empty();
+				//e.preventDefault();
+				$.get('/login',{uid : value},function(content){
+					$('#content').append(content);
+				});
+			}
+
+			function register(){
+				$('#content').empty();
+				$.get('/register',function(content){
+					$('#content').append(content);
+				});
+			}
+
+			function adduser(){
+				var name = $('#name').val();  
+				var email = $('#email').val();
+				var no = $('#no').val();
+
+				$('#content').empty();
+				$.get('/adduser',{name : name, email : email , no : no},function(content){
+					$('#content').append(content);
+				});
+			}
+			
+			function rating(){
+				$('#content').empty();
+				$.get('/rating',function(content){
+					$('#content').append(content);
+				});
+			}
+
+			function getRecom(url){
+				config = $('#val').val()
+				$.get(url+"&config="+$('#val').val(),function(content){
+					movieList = jQuery.parseJSON(content);
+					console.log(movieList);
+					$('#content').empty();	
+					if(config==3)
+					{
+						$('#content').append('<p> similar recomm </p>');
+						for (movie in movieList['sim_recom']){
+								$('#content').append('<li>'+movie+" "+movieList['sim_recom'][movie]);
+								//console.log(content[list][movies][1]);
+						}
+					}
+					else if(config==2)
+					{
+						$('#content').append('<p> mixed recomm </p>');
+						for (movie in movieList['mix_recom']){
+								$('#content').append('<li>'+ movie+" "+movieList['mix_recom'][movie]);
+								//console.log(content[list][movies][1]);
+						}
+					}
+					else if(config==1)
+					{
+						$('#content').append('<p> dissimilar recomm </p>');
+						for (movie in movieList['dissim_recom']){
+								$('#content').append('<li>'+ movie+" "+movieList['dissim_recom'][movie]);
+								//console.log(content[list][movies][1]);
+						}
+					}
+					
+					$('#content').append('<button onclick="formget(uid);"> Go back </button>');
+				});
+				
+			}
+			
+
+		</script>
+	</body>
+</html>

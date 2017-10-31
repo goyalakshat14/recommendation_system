@@ -1,6 +1,7 @@
 import pymysql
 import math
 import time
+import operator
 def list_contains_element(lis,element,column):
 	for elem in lis:
 		if(elem[column]==element):
@@ -110,7 +111,7 @@ def k_nearest_neighbour(uid,rated_movie_rating,rated_movie_users,all_the_user_ra
 	return similarity
 
 def predict_movie_rating(all_the_user_rating,unrated_movies_by_rated_movies_users,similarity_matrix):
-	predicted_movie_rating = []
+	predicted_movie_rating = {}
 	for movie in unrated_movies_by_rated_movies_users:
 		rating = 0.
 		weight_sum = 0.
@@ -119,7 +120,7 @@ def predict_movie_rating(all_the_user_rating,unrated_movies_by_rated_movies_user
 				rating += user[1]*float(all_the_user_rating[user[0]][movie])
 				weight_sum += user[1]
 		predicted_rating = rating/weight_sum
-		predicted_movie_rating.append([movie,predicted_rating])
+		predicted_movie_rating[movie] = predicted_rating/5
 	return predicted_movie_rating
 
 def k_collab_filter_program_controller(starting_time,cursor,uid,no_of_rated_movies_fetch,no_of_users_fetch,no_of_unrated_movies,all_the_user_rating):
@@ -131,12 +132,14 @@ def k_collab_filter_program_controller(starting_time,cursor,uid,no_of_rated_movi
 
 	
 	similarity_matrix = k_nearest_neighbour(uid,rated_movie_rating,rated_movie_users,all_the_user_rating,cursor)
-	print("got the similarity",time.time()-starting_time)
-	similarity_matrix = sorted(similarity_matrix,key=lambda x: x[1],reverse=True)
-	print("got the similarity",time.time()-starting_time)
+	# print("got the similarity",time.time()-starting_time)
+	# similarity_matrix = sorted(similarity_matrix,key=lambda x: x[1],reverse=True)
+	# print("got the similarity",time.time()-starting_time)
 	predicted_movie_rating = predict_movie_rating(all_the_user_rating,unrated_movies_by_rated_movies_users,similarity_matrix)
 
-	predicted_movie_rating = sorted(predicted_movie_rating,key=lambda x: x[1],reverse=True)
+	# predicted_movie_rating = sorted(predicted_movie_rating.items(), key=operator.itemgetter(1), reverse=True)
+	# predicted_movie_rating = sorted(predicted_movie_rating,key=lambda x: x[1],reverse=True)
+
 
 	return rated_movie_users,rated_movie,unrated_movies_by_rated_movies_users,predicted_movie_rating
 ############---testing k_nearest_function---#############

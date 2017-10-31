@@ -15,10 +15,10 @@ def content_based_filter(movie_with_genre,rated_movie,unrated_movie):
 #there can be a improvement in this like i was thinking why are we diving the watched genre by total genre
 #instead cab we divide it by total genre of the particular movie
 def calculate_damping_factor(count_of_genre,no_of_genre_watched):
-	damping_factor = []
+	damping_factor = {}
 	for movie in no_of_genre_watched:
 		factor = movie[1]/count_of_genre
-		damping_factor.append([movie[0],factor])
+		damping_factor[movie[0]] = factor
 	return damping_factor
 
 	
